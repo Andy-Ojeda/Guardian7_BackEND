@@ -66,7 +66,7 @@ const initWhatsAppClient = () => {
 
     client.on('ready', () => {
         console.log("Cliente WhatsApp listo");
-        // monitorVariablesAndTakeSnapshot(client, db);
+        monitorVariablesAndTakeSnapshot(client);
         // setInterval(() => actualizarEstadoAlarmaPorHorario(client), 60 * 1000);
 
         // const variablesRef = db.ref('variables');
