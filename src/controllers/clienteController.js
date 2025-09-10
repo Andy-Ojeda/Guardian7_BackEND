@@ -151,7 +151,6 @@ const obtenerClientesPorVendedor = async (req, res) => {
 
 // };
 
-
 const crearCliente = async (req, res) => {
   const clienteData = req.body.cliente;
   const clienteId = clienteData?.id;
@@ -204,7 +203,7 @@ const crearCliente = async (req, res) => {
       camaraIds.push(camaraId); // Almacenar IDs para asignar a variables
     }
 
-    // Configuración por defecto con cámaras
+    // Configuración por defecto con cámaras y previousState en todas las variables
     const configuracionPorDefecto = {
       contactos: {
         "5491122334455": { name: "Juan Perez", state: false }
@@ -220,17 +219,16 @@ const crearCliente = async (req, res) => {
         state: false
       },
       variables: {
-        variable1: { name: "Sensor_1", silence: false, state: false, camaras: [...camaraIds] }, // Todas las cámaras por defecto
-        variable2: { name: "Sensor_2", silence: false, state: false, camaras: [...camaraIds] },
-        variable3: { name: "Sensor_3", silence: false, state: false, camaras: [...camaraIds] },
-        variable4: { name: "Sensor_4", silence: false, state: false, camaras: [...camaraIds] },
-        variable5: { name: "Sensor_5", silence: false, state: false, camaras: [...camaraIds] },
-        variable6: { name: "Sensor_6", silence: false, state: false, camaras: [...camaraIds] },
-
-        variable7: { name: "SensorRF_7", silence: false, state: false, camaras: [...camaraIds] },
-        variable8: { name: "SensorRF_8", silence: false, state: false, camaras: [...camaraIds] },
-        variable9: { name: "SensorRF_9", silence: false, state: false, camaras: [...camaraIds] },
-        variable10: { name: "SensorRF_10", silence: false, state: false, camaras: [...camaraIds] }
+        variable1: { name: "Sensor_1", silence: false, state: false, camaras: [...camaraIds], previousState: false },
+        variable2: { name: "Sensor_2", silence: false, state: false, camaras: [...camaraIds], previousState: false },
+        variable3: { name: "Sensor_3", silence: false, state: false, camaras: [...camaraIds], previousState: false },
+        variable4: { name: "Sensor_4", silence: false, state: false, camaras: [...camaraIds], previousState: false },
+        variable5: { name: "Sensor_5", silence: false, state: false, camaras: [...camaraIds], previousState: false },
+        variable6: { name: "Sensor_6", silence: false, state: false, camaras: [...camaraIds], previousState: false },
+        variable7: { name: "SensorRF_7", silence: false, state: false, camaras: [...camaraIds], previousState: false },
+        variable8: { name: "SensorRF_8", silence: false, state: false, camaras: [...camaraIds], previousState: false },
+        variable9: { name: "SensorRF_9", silence: false, state: false, camaras: [...camaraIds], previousState: false },
+        variable10: { name: "SensorRF_10", silence: false, state: false, camaras: [...camaraIds], previousState: false }
       },
       camaras, // Nodo de cámaras
     };
@@ -255,8 +253,6 @@ const crearCliente = async (req, res) => {
     res.status(500).json({ error: 'Error en el servidor' });
   }
 };
-
-
 
 
 

@@ -14,6 +14,10 @@ const { notifyContacts } = require("./notifyContacts");
 
 const handleMessage = async (msg) => {
     const phoneNumber = msg.from.split('@')[0];
+
+console.log("MSG::: ", msg)
+
+
     let name;
 
     if (phoneNumber !== "status") {

@@ -384,6 +384,55 @@
 
 
 
+// require('dotenv').config();
+// const express = require('express');
+// const cors = require('cors');
+// const initWhatsAppClient = require('./services/whatsappService');
+// const clienteRoutes = require('./routes/clienteRoutes');
+// const vendedorRoutes = require('./routes/vendedorRoutes');
+
+// const app = express();
+// const PORT = process.env.PORT || 3000;
+
+// // Middleware
+// app.use(cors({
+//     origin: 'http://localhost:3005',
+//     credentials: true
+// }));
+// app.use(express.json());
+// app.use(express.urlencoded({ extended: true }));
+
+// // Logging simple
+// app.use((req, res, next) => {
+//     console.log(`[${req.method}] ${req.url}`);
+//     next();
+// });
+
+// // Rutas
+// app.use('/api/clientes', clienteRoutes);
+// app.use('/api/vendedores', vendedorRoutes);
+
+// // WhatsApp
+// const whatsappClient = initWhatsAppClient();
+
+// // Cierre
+// process.on('SIGINT', async () => {
+//     console.log('Cerrando servidor y cliente de WhatsApp...');
+//     try {
+//         await whatsappClient.destroy();
+//         console.log('Cliente de WhatsApp destruido');
+//     } catch (error) {
+//         console.error('Error al destruir el cliente:', error);
+//     }
+//     process.exit(0);
+// });
+
+// app.listen(PORT, () => console.log(`Servidor en http://localhost:${PORT}`));
+
+
+
+
+
 require('dotenv').config();
 const express = require('express');
 const cors = require('cors');
