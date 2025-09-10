@@ -582,16 +582,34 @@ function initWhatsAppClient() {
     // });
 
 
-        const client = new Client({
-            authStrategy: new LocalAuth({
-                clientId: 'Guardian7'  // solo el ID, sin dataPath
-            }),
-            puppeteer: {
-                headless: true,
-                args: ['--no-sandbox', '--disable-setuid-sandbox']
-            }
-        });
+        // const client = new Client({
+        //     authStrategy: new LocalAuth({
+        //         clientId: 'Guardian7'  // solo el ID, sin dataPath
+        //     }),
+        //     puppeteer: {
+        //         headless: true,
+        //         args: ['--no-sandbox', '--disable-setuid-sandbox']
+        //     }
+        // });
 
+
+
+
+
+        const wwebVersion = '2.2412.54'; 
+
+this.client = new Client({
+  authStrategy: new LocalAuth({
+    clientId: "client-one"
+  }),
+  puppeteer: {
+    args: ["--no-sandbox"],
+  },
+  webVersionCache: {
+    type: 'remote',
+    remotePath: `https://raw.githubusercontent.com/wppconnect-team/wa-version/main/html/${wwebVersion}.html`,
+  },
+});
 
 
 
@@ -621,9 +639,15 @@ function initWhatsAppClient() {
         console.error('❌ Fallo de autenticación:', msg);
     });
 
-    client.on('disconnected', (reason) => {
+    client.on('disconnected', async (reason) => {
         console.log('⚠️ Cliente desconectado:', reason);
+        try {
+            await client.initialize(); // reintentar automáticamente
+        } catch (e) {
+            console.error('Error al reintentar conexión:', e);
+        }
     });
+
 
     client.initialize();
     return client;
