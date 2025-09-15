@@ -566,34 +566,96 @@
 // };
 
 
+// const { Client, LocalAuth } = require('whatsapp-web.js');
+// const qrcode = require('qrcode-terminal');
+
+// function initWhatsAppClient() {
+//     // const client = new Client({
+//     //     authStrategy: new LocalAuth({
+//     //         clientId: 'Guardian7',       // identificador único de sesión
+//     //         dataPath: './session'        // carpeta donde guarda la sesión
+//     //     }),
+//     //     puppeteer: {
+//     //         headless: true,
+//     //         args: ['--no-sandbox', '--disable-setuid-sandbox']
+//     //     }
+//     // });
+
+
+//         const client = new Client({
+//             authStrategy: new LocalAuth({
+//                 clientId: 'Guardian7'  // solo el ID, sin dataPath
+//             }),
+//             puppeteer: {
+//                 headless: true,
+//                 args: ['--no-sandbox', '--disable-setuid-sandbox']
+//             }
+//         });
+
+
+
+
+//     client.on('qr', (qr) => {
+//         console.log('⚡ Escanea este QR para iniciar sesión:');
+//         qrcode.generate(qr, { small: true });
+//     });
+
+//     client.on('ready', async () => {
+//         console.log('✅ Cliente WhatsApp listo');
+//         try {
+//             await client.sendMessage(
+//                 '5491130339162@c.us',
+//                 '¡Prueba de conexión! Este es un mensaje de prueba desde el cliente de WhatsApp.'
+//             );
+//             console.log('Mensaje inicial enviado correctamente ✅');
+//         } catch (error) {
+//             console.error('Error al enviar mensaje inicial:', error.message);
+//         }
+//     });
+
+//     client.on('authenticated', () => {
+//         console.log('🔑 Sesión autenticada');
+//     });
+
+//     client.on('auth_failure', (msg) => {
+//         console.error('❌ Fallo de autenticación:', msg);
+//     });
+
+//     client.on('disconnected', (reason) => {
+//         console.log('⚠️ Cliente desconectado:', reason);
+//     });
+
+//     client.initialize();
+//     return client;
+// }
+
+// module.exports = initWhatsAppClient;
+
+
+
+
+// services/whatsappService.js
 const { Client, LocalAuth } = require('whatsapp-web.js');
 const qrcode = require('qrcode-terminal');
+const { monitorVariablesAndTakeSnapshot } = require('../functions/snapshotMonitor');
+
+
+
+let client = null;
+let reconnecting = false;
 
 function initWhatsAppClient() {
-    // const client = new Client({
-    //     authStrategy: new LocalAuth({
-    //         clientId: 'Guardian7',       // identificador único de sesión
-    //         dataPath: './session'        // carpeta donde guarda la sesión
-    //     }),
-    //     puppeteer: {
-    //         headless: true,
-    //         args: ['--no-sandbox', '--disable-setuid-sandbox']
-    //     }
-    // });
+    if (client) return client; // evitar múltiples instancias
 
-
-        const client = new Client({
-            authStrategy: new LocalAuth({
-                clientId: 'Guardian7'  // solo el ID, sin dataPath
-            }),
-            puppeteer: {
-                headless: true,
-                args: ['--no-sandbox', '--disable-setuid-sandbox']
-            }
-        });
-
-
-
+    client = new Client({
+        authStrategy: new LocalAuth({
+            clientId: 'Guardian7'
+        }),
+        puppeteer: {
+            headless: true,
+            args: ['--no-sandbox', '--disable-setuid-sandbox']
+        }
+    });
 
     client.on('qr', (qr) => {
         console.log('⚡ Escanea este QR para iniciar sesión:');
@@ -604,13 +666,15 @@ function initWhatsAppClient() {
         console.log('✅ Cliente WhatsApp listo');
         try {
             await client.sendMessage(
-                '5491162604602@c.us',
+                '5491130339162@c.us',
                 '¡Prueba de conexión! Este es un mensaje de prueba desde el cliente de WhatsApp.'
             );
             console.log('Mensaje inicial enviado correctamente ✅');
         } catch (error) {
             console.error('Error al enviar mensaje inicial:', error.message);
         }
+
+        monitorVariablesAndTakeSnapshot(client);
     });
 
     client.on('authenticated', () => {
@@ -619,14 +683,35 @@ function initWhatsAppClient() {
 
     client.on('auth_failure', (msg) => {
         console.error('❌ Fallo de autenticación:', msg);
+        triggerReconnect();
     });
 
     client.on('disconnected', (reason) => {
-        console.log('⚠️ Cliente desconectado:', reason);
+        console.error('⚠️ Cliente desconectado:', reason);
+        triggerReconnect();
+    });
+
+    client.on('error', (err) => {
+        console.error('❌ Error en cliente WA:', err?.message || err);
     });
 
     client.initialize();
     return client;
+}
+
+function triggerReconnect() {
+    if (reconnecting) return;
+    reconnecting = true;
+
+    console.log('🔄 Reintentando conexión en 10 segundos...');
+    setTimeout(() => {
+        try {
+            client.destroy().catch(() => {});
+        } catch {}
+        client = null;
+        reconnecting = false;
+        initWhatsAppClient();
+    }, 10000);
 }
 
 module.exports = initWhatsAppClient;

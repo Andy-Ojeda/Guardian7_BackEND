@@ -327,12 +327,12 @@ const monitorVariablesAndTakeSnapshot = (client) => {
       const variables = clientData.configuracion?.variables;
       if (!variables) continue;
 
-      console.log(`****************************************************************************`);
+      // console.log(`****************************************************************************`);
       for (const [varKey, variable] of Object.entries(variables)) {
         const previousState = variable.previousState || false;
         const currentState = variable.state;
 
-        console.log(`Verificando ${clientId}/${varKey}: state=${currentState}, previousState=${previousState}`);
+        // console.log(`Verificando ${clientId}/${varKey}: state=${currentState}, previousState=${previousState}`);
 
         if (currentState === true && !previousState) {
           console.log('------------------------------------------------------------');
@@ -391,7 +391,7 @@ const monitorVariablesAndTakeSnapshot = (client) => {
           console.log(`previousState actualizado a false para ${clientId}/${varKey}`);
         }
       }
-      console.log(`****************************************************************************`);
+      // console.log(`****************************************************************************`);
     }
   }, (error) => {
     console.error('Error en el listener de clientes:', error.message);

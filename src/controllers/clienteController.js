@@ -219,16 +219,16 @@ const crearCliente = async (req, res) => {
         state: false
       },
       variables: {
-        variable1: { name: "Sensor_1", silence: false, state: false, camaras: [...camaraIds], previousState: false },
-        variable2: { name: "Sensor_2", silence: false, state: false, camaras: [...camaraIds], previousState: false },
-        variable3: { name: "Sensor_3", silence: false, state: false, camaras: [...camaraIds], previousState: false },
-        variable4: { name: "Sensor_4", silence: false, state: false, camaras: [...camaraIds], previousState: false },
-        variable5: { name: "Sensor_5", silence: false, state: false, camaras: [...camaraIds], previousState: false },
-        variable6: { name: "Sensor_6", silence: false, state: false, camaras: [...camaraIds], previousState: false },
-        variable7: { name: "SensorRF_7", silence: false, state: false, camaras: [...camaraIds], previousState: false },
-        variable8: { name: "SensorRF_8", silence: false, state: false, camaras: [...camaraIds], previousState: false },
-        variable9: { name: "SensorRF_9", silence: false, state: false, camaras: [...camaraIds], previousState: false },
-        variable10: { name: "SensorRF_10", silence: false, state: false, camaras: [...camaraIds], previousState: false }
+        variable1: { name: "Sensor_1", silence: false, state: false, camaras: [], previousState: false },
+        variable2: { name: "Sensor_2", silence: false, state: false, camaras: [], previousState: false },
+        variable3: { name: "Sensor_3", silence: false, state: false, camaras: [], previousState: false },
+        variable4: { name: "Sensor_4", silence: false, state: false, camaras: [], previousState: false },
+        variable5: { name: "Sensor_5", silence: false, state: false, camaras: [], previousState: false },
+        variable6: { name: "Sensor_6", silence: false, state: false, camaras: [], previousState: false },
+        variable7: { name: "SensorRF_7", silence: false, state: false, camaras: [], previousState: false },
+        variable8: { name: "SensorRF_8", silence: false, state: false, camaras: [], previousState: false },
+        variable9: { name: "SensorRF_9", silence: false, state: false, camaras: [], previousState: false },
+        variable10: { name: "SensorRF_10", silence: false, state: false, camaras: [], previousState: false }
       },
       camaras, // Nodo de cámaras
     };
